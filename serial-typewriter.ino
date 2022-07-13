@@ -157,13 +157,13 @@ void loop() {
 }
 
 void selectCol(int col) {
-  for (int pin = 0; pin < 4; pin++) {
+  for (int pin = 0; pin < 3; pin++) {
     digitalWrite(colPins[pin], colChannels[col][pin]);
   }
 }
 
 void selectRow(int row) {
-  for (int pin = 0; pin < 3; pin++) {
+  for (int pin = 0; pin < 4; pin++) {
     digitalWrite(rowPins[pin], rowChannels[row][pin]);
   }
 }
