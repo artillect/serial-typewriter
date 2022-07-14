@@ -1,3 +1,5 @@
+#include <SoftwareSerial.h>
+
 // TODO add pin numbers
 #define RX 2
 #define TX 3
@@ -10,10 +12,10 @@
 #define S21 10
 #define S22 11
 
-int rowPins[] = {S10, S11, S12, S13};
-int colPins[] = {S20, S21, S22};
+int colPins[] = {S10, S11, S12, S13};
+int rowPins[] = {S20, S21, S22};
 
-int rowChannels[][4] = {
+int colChannels[][4] = {
   {0, 0, 0, 0},
   {0, 0, 0, 1}, 
   {0, 0, 1, 0}, 
@@ -32,7 +34,7 @@ int rowChannels[][4] = {
   {1, 1, 1, 1}
   };
 
-int colChannels[][3] = {
+int rowChannels[][3] = {
   {0, 0, 0},
   {0, 0, 1}, 
   {0, 1, 0}, 
@@ -72,13 +74,13 @@ int asciiToKeycodes[] = {
   21, // 7
   54, // 8
   53, // 9
-  0, // :
+  49, // :
   49, // ;
   0, // <
   61, // =
   0, // >
-  0, // ?
-  0, // @
+  72, // ?
+  29, // @
   37, // A 
   56, // B
   58, // C
@@ -139,32 +141,49 @@ int asciiToKeycodes[] = {
   59 // z
   };
 
+
+SoftwareSerial PiSerial = SoftwareSerial(2,3);
+
 void setup() {
+  pinMode(EN, OUTPUT);
+  digitalWrite(EN, HIGH);
+
+  pinMode(RX, INPUT);
+  pinMode(TX, OUTPUT);  
+
   for (int i = 0; i < sizeof(rowPins) / sizeof(int); i++) {
     pinMode(rowPins[i], OUTPUT);
   }
   for (int i = 0; i < sizeof(colPins) / sizeof(int); i++) {
     pinMode(colPins[i], OUTPUT);
   }
+  Serial.begin(57600);
+  PiSerial.begin(57600);
 
-  //Serial.begin(57600);
-  // Add software serial
-  typeString("Hello world!");
+  typeString("Hello world!\n");
 }
 
 void loop() {
+  if (PiSerial.available()) {
+    int incoming = PiSerial.read();
+    Serial.write(incoming);
+    typeChar(incoming);
+  } 
 
-}
-
-void selectCol(int col) {
-  for (int pin = 0; pin < 3; pin++) {
-    digitalWrite(colPins[pin], colChannels[col][pin]);
+	if (Serial.available()) {
+    PiSerial.write(Serial.read());
   }
 }
 
 void selectRow(int row) {
-  for (int pin = 0; pin < 4; pin++) {
+  for (int pin = 0; pin < 3; pin++) {
     digitalWrite(rowPins[pin], rowChannels[row][pin]);
+  }
+}
+
+void selectCol(int col) {
+  for (int pin = 0; pin < 4; pin++) {
+    digitalWrite(colPins[pin], colChannels[col][pin]);
   }
 }
 
@@ -201,10 +220,11 @@ void typeChar(char c) {
     || c == '_') {
       sendKeycode(80); // Shift Lock
       sendKeycode(keycode);
-      sendKeycode(80); // Shift Lock
+      sendKeycode(85); // Shift
   } else {
     sendKeycode(keycode);
   }
+  //Serial.println(keycode);
 }
 
 void typeString(String s) {
@@ -218,7 +238,8 @@ void sendKeycode(int keycode) {
   byte col = keycode % 11;
   selectCol(col);
   selectRow(row);
-  digitalWrite(EN, HIGH);
-  delay(2);
   digitalWrite(EN, LOW);
+  delay(45);
+  digitalWrite(EN, HIGH);
+  delay(45);
 }
