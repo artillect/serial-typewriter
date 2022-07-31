@@ -52,7 +52,7 @@ int asciiToKeycodes[] = {
   42, // !
   40, // "
   18, // #
-  28, // $
+  27, // $
   51, // %
   21, // &
   40, // '
@@ -68,7 +68,7 @@ int asciiToKeycodes[] = {
   42, // 1
   29, // 2
   18, // 3
-  28, // 4
+  27, // 4
   51, // 5
   31, // 6
   21, // 7
@@ -138,7 +138,11 @@ int asciiToKeycodes[] = {
   4, // w
   70, // x
   1, // y
-  59 // z
+  59, // z
+  0, // {
+  0, // |
+  0, // }
+  9 // ~
   };
 
 
@@ -159,8 +163,11 @@ void setup() {
   }
   Serial.begin(57600);
   PiSerial.begin(57600);
-
-  typeString("Hello world!\n");
+  // typeString("Hello world!\n\n");
+  //typeString("The quick red fox jumps over the lazy brown dog.\n\n");
+  // typeString("This is my typewriter.\n");
+  // typeString("There are many like it,\n");
+  // typeString("but this one is mine.\n");
 }
 
 void loop() {
@@ -202,6 +209,9 @@ int charToKeycode(char c) {
     case '\n': // Newline
       return 60;
       break;
+    case '\r':
+      return -1;
+      break;
     default:
       return asciiToKeycodes[c - 32];
       break;
@@ -210,6 +220,10 @@ int charToKeycode(char c) {
 
 void typeChar(char c) {
   int keycode = charToKeycode(c);
+
+  if ((c < ' ' && c != '\n') || c > '~') {
+    keycode = -1;
+  }
 
   // Check if c is "uppercase"
   if ((c >= 'A' && c <= 'Z') 
@@ -220,8 +234,8 @@ void typeChar(char c) {
     || c == '_') {
       sendKeycode(80); // Shift Lock
       sendKeycode(keycode);
-      sendKeycode(85); // Shift
-  } else {
+      sendKeycode(85); // Shift    
+  } else if (keycode != -1) {
     sendKeycode(keycode);
   }
   //Serial.println(keycode);
@@ -239,7 +253,7 @@ void sendKeycode(int keycode) {
   selectCol(col);
   selectRow(row);
   digitalWrite(EN, LOW);
-  delay(45);
+  delay(50);
   digitalWrite(EN, HIGH);
-  delay(45);
+  delay(50);
 }
