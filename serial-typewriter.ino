@@ -174,78 +174,23 @@ void setup() {
   PiSerial.begin(1200);
 
   PiSerial.write(0x11); // XON
-
-  // int CodeKeycode = 19;
-  // byte row = CodeKeycode / 11;
-  // byte col = CodeKeycode % 11;
-  // selectCol(col);
-  // selectRow(row);
-  // digitalWrite(EN, LOW);
-  // delay(38);
-  // sendKeycode(42);
-  // typeString("Hello");
-  // selectCol(col);
-  // selectRow(row);
-  // digitalWrite(EN, LOW);
-  // delay(38);
-  // sendKeycode(42);
-  // typeString(" world!");
-
-  bold();
-  typeString("Hello!");
-  unBold();
-
-
-  //typeString("Hello world!\n\n");
-  //typeString("The quick red fox jumps over the lazy brown dog.\n\n");
-  // typeString("This is my typewriter.\n");
-  // typeString("There are many like it,\n");
-  // typeString("but this one is mine.\n");
-
-  // typeString("             __..--''``---....___   _..._    __\n");
-  // typeString(" /// //_.-'    .-/\";  `        ``<._  ``.''_ `. / // /\n");
-  // typeString("///_.-' _..--.'_    \                    `( ) ) // //\n");
-  // typeString("/ (_..-' // (< _     ;_..__               ; `' / ///\n");
-  // typeString("/ // // //  `-._,_)' // / ``--...____..-' /// / //");
-
-// typeString("          .__....._             _.....__,\n");
-// typeString("            .\": o :':         ;': o :\".\n");
-// typeString("            `. `-' .'.       .'. `-' .'\n");
-// typeString("              `---'             `---'\n");
-// typeString("\n");
-// typeString("    _...----...      ...   ...      ...----..._\n");
-// typeString(" .-'__..-\"\"'----    `.  `\"`  .'    ----'\"\"-..__`-.\n");
-// typeString("'.-'   _.--\"\"\"'       `-._.-'       '\"\"\"--._   `-.`\n");
-// typeString("'  .-\"'                  :                  `\"-.  `\n");
-// typeString("  '   `.              _.'\"'._              .'   `\n");
-// typeString("        `.       ,.-'\"       \"'-.,       .'\n");
-// typeString("          `.                           .'\n");
-// typeString("            `-._                   _.-'\n");
-// typeString("                `\"'--...___...--'\"`\n");
 }
 
 void loop() {
   char incoming = 0;
   if (PiSerial.available() >= 24 && flowControl == false) {
     PiSerial.write(0x13); // XOFF
-    //PiSerial.write(0x13); // XOFF, twice for good luck
     flowControl = true;
   } else if (flowControl == true && PiSerial.available() < 8) {
     PiSerial.write(0x11); // XON
-    //PiSerial.write(0x11); // XON
     flowControl = false;
   }
 
   if (PiSerial.available()) {
     incoming = PiSerial.read();
-    // PiSerial.write(0x13); // XOFF
     if (incoming == '\e') {
-      //Serial.print("Escape!");
       PiSerial.read();
       int param;
-      // while (PiSerial.available() < 8);
-      // PiSerial.write(0x13); // XOFF
-      // flowControl = true;
       param = PiSerial.parseInt(SKIP_NONE);
       switch (param) {
         case 0:
@@ -259,31 +204,16 @@ void loop() {
           break;
       }
       PiSerial.read();
-      // if (incoming = ';') {
-      //   while (PiSerial.available() <=4);
-      //   PiSerial.parseInt(SKIP_NONE);
-      //   PiSerial.read();
-      // }
       incoming = 0;
-      // PiSerial.write(0x11); // XON
     } else {
       Serial.write(incoming);
-      //newChar = 1;
       typeChar(incoming);
     }
-    // PiSerial.write(0x11); // XON
   } 
 
 	if (Serial.available()) {
     PiSerial.write(Serial.read());
   }
-
-  // if (newChar) {
-  //   //PiSerial.write(0x13); // XOFF
-  //   typeChar(incoming);
-  //   newChar = 0;
-  //   //PiSerial.write(0x11); // XON
-  // }
 }
 
 void selectRow(int row) {
