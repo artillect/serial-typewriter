@@ -295,7 +295,7 @@ void loop() {
 		flowControl = false;
 	}
 
-	if (PiSerial.available()) {
+	if (PiSerial.available() && !keyDown && millis() - now > 38 * 2) {
 		incoming = PiSerial.read();
 		if (incoming == '\e') {
 			PiSerial.read();
@@ -315,22 +315,16 @@ void loop() {
 			incoming = 0;
 		} else {
 			Serial.write(incoming);
-			newChar = true;
+      typeChar(incoming);
+		  newChar = false;
+		  keyDown = true;
+		  now = millis();
 		}
-	} 
-
-	if (newChar && !keyDown && millis() - last > 38) {
-		Serial.println("typing");
-		typeChar(incoming);
-		newChar = false;
-		keyDown = true;
-		now = millis();
 	}
 
 	if (keyDown && millis() - now > 38) {
 		sendKeyUp();
 		keyDown = false;
-		last = millis();
 	}
 
 	for (int i = 0; i < 8; i++) {
