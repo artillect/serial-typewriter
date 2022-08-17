@@ -181,7 +181,7 @@ int keycodeToAscii[] = {
     52,     // 4
     0,
     50,     // 2
-    0,
+    32,		// L MAR but actually space since the last row isn't working
     54,     // 6
     177,    // plus or minus
     0,
@@ -315,10 +315,10 @@ void loop() {
 			incoming = 0;
 		} else {
 			Serial.write(incoming);
-      typeChar(incoming);
-		  newChar = false;
-		  keyDown = true;
-		  now = millis();
+    		typeChar(incoming);
+			newChar = false;
+			keyDown = true;
+			now = millis();
 		}
 	}
 
