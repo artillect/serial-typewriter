@@ -256,6 +256,7 @@ bool keyDown;
 
 int lastKBKeycode;
 int last = 0;
+long lastKeyPressedTime;
 
 void setup() {
 	pinMode(EN, OUTPUT);
@@ -295,7 +296,7 @@ void loop() {
 		flowControl = false;
 	}
 
-	if (PiSerial.available() && !keyDown && millis() - now > 38 * 2) {
+	if (PiSerial.available() ) {//&& !keyDown && millis() - now > 38 * 2) {
 		incoming = PiSerial.read();
 		if (incoming == '\e') {
 			PiSerial.read();
@@ -314,18 +315,21 @@ void loop() {
 			PiSerial.read();
 			incoming = 0;
 		} else {
-			Serial.write(incoming);
-    		typeChar(incoming);
-			newChar = false;
 			keyDown = true;
+			Serial.write(incoming);
+			//PiSerial.write(0x13); // XOFF
+    		typeChar(incoming);
 			now = millis();
 		}
 	}
 
-	if (keyDown && millis() - now > 38) {
-		sendKeyUp();
-		keyDown = false;
-	}
+	// if (keyDown && millis() - now > 38) {
+	// 	sendKeyUp();
+	// 	keyDown = false;
+	// 	PiSerial.write(0x11); // XON
+	// }
+
+	//PiSerial.write(0x13); // XOFF
 
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 11; j++) {
@@ -337,9 +341,12 @@ void loop() {
 				char character = keycodeToAscii[keycode];
 				PiSerial.write(character);
 				lastKBKeycode = keycode;
+				lastKeyPressedTime = millis();
 			}
 		}
 	}
+
+	//PiSerial.write(0x11); // XON
 
 	if (Serial.available()) {
 		PiSerial.write(Serial.read());
@@ -408,9 +415,11 @@ void typeChar(char c) {
 		|| c == ':' || c == '?'
 		|| c == '@' || c == '['
 		|| c == '_') {
-			sendKeycode(80); // Shift Lock
-			sendKeycode(keycode);
-			sendKeycode(85); // Shift    
+			selectCol(8);
+			selectRow(7);
+			digitalWrite(EN, LOW);
+			delay(38);
+			sendKeycode(keycode);  
 	} else if (keycode != -1) {
 		sendKeycode(keycode);
 	}
@@ -432,6 +441,9 @@ void sendKeycode(int keycode) {
 		delay(24);
 	}
 	digitalWrite(EN, LOW);
+	delay(38);
+	digitalWrite(EN, HIGH);
+	delay(38);
 	lastKeycode = keycode;
 	if (isBold) {
 		delay(38*2);
