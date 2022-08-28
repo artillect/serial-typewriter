@@ -15,9 +15,10 @@ The typewriter's keyboard matrix is driven by two multiplexers controlled by an 
 To connect the Arduino Uno to my Raspberry Pi, I built a voltage divider circuit for the connection between the Arduino's TX pin and the Raspberry Pi's RX pin, to convert the Arduino's 5V output to a safe level for the Raspberry Pi. You can also use a level shifter for this, and I will probably switch to using one in the future since my current breadboard circuit is a bit noisy.
 
 Here's the circuit diagram:
-![circuit (16)](https://user-images.githubusercontent.com/8906201/183266452-449de468-a93d-4cd9-b882-d5314fc130e3.png)
+![circuit (17)](https://user-images.githubusercontent.com/8906201/187097565-9788f08e-c551-4705-a70e-88463bc97527.png)
 
 ## Software
+
 
 The Raspberry Pi's UART login must be enabled using `raspi-config` > Advanced Options > Serial. To prevent ANSI escape sequences from being sent to the Arduino, add `export TERM=dumb` to the end of your .bashrc. I am working on writing code to process escape sequences so this may not be necessary in the future.
 
