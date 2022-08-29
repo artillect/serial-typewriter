@@ -6,6 +6,8 @@ Who doesn't love the sound of an old typewriter? I know I do! That's why I'm wor
 
 This readme is still a work in progress, but I made a [YouTube video](https://www.youtube.com/watch?v=JvhT_Bru0AA) that explains how it works.
 
+If you need help troubleshooting, [create an issue](https://github.com/artillect/serial-typewriter/issues/new), or ask for help in [my Discord server](https://discord.gg/J7D7KqV3).
+
 ## Hardware
 
 The typewriter's keyboard is wired up in an 8x11 matrix, and connects to the typewriter using an 8 pin cable and an 11 pin cable. When one of the row pins is connected to a column pin by a keypress, the typewriter detects that and prints that character. 
