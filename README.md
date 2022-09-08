@@ -8,6 +8,12 @@ This readme is still a work in progress, but I made a [YouTube video](https://ww
 
 If you need help troubleshooting, [create an issue](https://github.com/artillect/serial-typewriter/issues/new), or ask for help in [my Discord server](https://discord.gg/J7D7KqV3).
 
+## Project Supporters
+This project wouldn't be possible without the people who sent me components and helped me sort out the design! To everyone who helped me finish this project, thank you!
+
+CSTRSK - Sent me a Raspberry Pi Zero W and Zero 2 W: [GitHub](https://github.com/CSTRSK), [Website](https://cstrsk.de/)
+Whisker - Sent me a bag of Alps keyboard switches and a multi-core microcontroller: [@whixr](https://twitter.com/whixr), [Website](http://tymkrs.com/)
+
 ## Hardware
 
 The typewriter's keyboard is wired up in an 8x11 matrix, and connects to the typewriter using an 8 pin cable and an 11 pin cable. When one of the row pins is connected to a column pin by a keypress, the typewriter detects that and prints that character. 
