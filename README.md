@@ -12,6 +12,7 @@ If you need help troubleshooting, [create an issue](https://github.com/artillect
 This project wouldn't be possible without the people who sent me components and helped me sort out the design! To everyone who helped me finish this project, thank you!
 
 CSTRSK - Sent me a Raspberry Pi Zero W and Zero 2 W: [GitHub](https://github.com/CSTRSK), [Website](https://cstrsk.de/)
+
 Whisker - Sent me a bag of Alps keyboard switches and a multi-core microcontroller: [@whixr](https://twitter.com/whixr), [Website](http://tymkrs.com/)
 
 ## Hardware
