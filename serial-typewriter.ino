@@ -2,9 +2,7 @@
 
 #include <SoftwareSerial.h>
 
-// TODO add pin numbers
-#define RX 2
-#define TX 3
+// TODO change the order so this makes sense
 #define EN 4
 #define S10 5
 #define S11 6
