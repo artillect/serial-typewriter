@@ -150,7 +150,6 @@ int asciiToKeycodes[] = {
 
 AltSoftSerial PiSerial;
 
-//SoftwareSerial PiSerial = SoftwareSerial(8,9);
 int lastKeycode = -1;
 int newChar = 0;
 bool flowControl = false;
