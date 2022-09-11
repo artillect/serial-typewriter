@@ -31,6 +31,7 @@ Here's the schematic:
 
 ## Software
 
+
 The Raspberry Pi's UART login must be enabled using `raspi-config` > Advanced Options > Serial. To prevent ANSI escape sequences from being sent to the Arduino, add `export TERM=dumb` to the end of your .bashrc. I am working on writing code to process escape sequences so this may not be necessary in the future.
 
 Once all of this is set up, flash serial-typewriter.ino to your Arduino, and turn on your typewriter! Let me know if you have any questions about setting this up, I'll try my best to provide assistance, but no guarantees, as I'm not familiar with other brands of typewriters.
