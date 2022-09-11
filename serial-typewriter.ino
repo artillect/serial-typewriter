@@ -329,24 +329,23 @@ void loop() {
 	// 	PiSerial.write(0x11); // XON
 	// }
 
-	//PiSerial.write(0x13); // XOFF
-
+	int keycode = -1;
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 11; j++) {
 			selectKBRow(i);
 			selectKBCol(j);
-			if (digitalRead(A3) == HIGH && (i * 11 + j) != lastKBKeycode) {
-				int keycode = i * 11 + j;
-				// Calculate keycode and send
-				char character = keycodeToAscii[keycode];
-				PiSerial.write(character);
-				lastKBKeycode = keycode;
-				lastKeyPressedTime = millis();
+			if (digitalRead(A3) == HIGH) {
+				keycode = i * 11 + j;
 			}
 		}
 	}
-
-	//PiSerial.write(0x11); // XON
+	if (keycode != -1 && keycode != lastKBKeycode) {
+		char character = keycodeToAscii[keycode];
+		lastKBKeycode = keycode;
+		PiSerial.write(character);
+	} else if (keycode == -1) {
+		lastKBKeycode = -1;
+	}
 
 	if (Serial.available()) {
 		PiSerial.write(Serial.read());
@@ -433,6 +432,9 @@ void typeString(String s) {
 }
 
 void sendKeycode(int keycode) {
+	if (isBold) {
+		PiSerial.write(0x13); // XOFF
+	}
 	byte row = keycode / 11;
 	byte col = keycode % 11;
 	selectCol(col);
@@ -443,10 +445,11 @@ void sendKeycode(int keycode) {
 	digitalWrite(EN, LOW);
 	delay(38);
 	digitalWrite(EN, HIGH);
-	delay(38);
+	delay(45);
 	lastKeycode = keycode;
 	if (isBold) {
 		delay(38*2);
+		PiSerial.write(0x11); // XON
 	}
 }
 
