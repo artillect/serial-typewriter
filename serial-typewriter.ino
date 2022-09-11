@@ -2,9 +2,7 @@
 
 #include <SoftwareSerial.h>
 
-// TODO add pin numbers
-#define RX 2
-#define TX 3
+// TODO change the order so this makes sense
 #define EN 4
 #define S10 5
 #define S11 6
@@ -244,7 +242,6 @@ int keycodeToAscii[] = {
 
 AltSoftSerial PiSerial;
 
-//SoftwareSerial PiSerial = SoftwareSerial(8,9);
 int lastKeycode = -1;
 bool newChar = false;
 bool flowControl = false;
@@ -484,12 +481,12 @@ void bold() {
 }
 
 void unBold() {
-	if (isBold) {
-		selectCol(8);
-		selectRow(1);
-		digitalWrite(EN, LOW);
-		delay(38);
-		sendKeycode(42);
-		isBold = false;
-	}
+  if (isBold) {
+    selectCol(8);
+    selectRow(1);
+    digitalWrite(EN, LOW);
+    delay(38);
+    sendKeycode(42);
+    isBold = false;
+  }
 }
