@@ -4,6 +4,8 @@
 
 Who doesn't love the sound of an old typewriter? I know I do! That's why I'm working on turning a Brother AX-25 typewriter into a Linux terminal.
 
+Here is the [video I made](https://youtu.be/Pd6pa3Jko3w) about the final version of it. I'm going to be updating
+
 This readme is still a work in progress, but I made a [YouTube video](https://www.youtube.com/watch?v=JvhT_Bru0AA) that explains how it works.
 
 If you need help troubleshooting, [create an issue](https://github.com/artillect/serial-typewriter/issues/new), or ask for help in [my Discord server](https://discord.gg/J7D7KqV3).
